@@ -53,18 +53,27 @@ public class Quote {
 		this.transport = transport;
 		this.price = price;
 	}
-	
-	public Quote newHigherQuote(double priceIncrement){
+
+	public Key getKey() {
+		return this.key;
+	}
+
+	public Quote newHigherQuote(double priceIncrement) {
 		return new Quote(new Key(UUID.randomUUID().toString()), this.transport, this.price.incrementBy(priceIncrement));
 	}
-	public Quote newLowerQuote(double priceDecrement){
+
+	public Quote newLowerQuote(double priceDecrement) {
 		return new Quote(new Key(UUID.randomUUID().toString()), this.transport, this.price.decrementBy(priceDecrement));
 	}
 
-	public boolean areYouThisQuote(Quote.Key quoteKey){
+	public boolean areYouThisQuote(Quote.Key quoteKey) {
 		return this.key.equals(quoteKey);
 	}
-	
+
+	public boolean hasLowerOrEqualPriceThan(Price priceLimit) {
+		return this.price.isLowerOrEqualThan(priceLimit);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -88,5 +97,10 @@ public class Quote {
 		} else if (!key.equals(other.key))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Quote[%s]", price);
 	}
 }
